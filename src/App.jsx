@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [url, setUrl] = useState('');
   const [params, setParams] = useState([]);
-  const [authCode, setAuthCode] = useState('');
+  const [authCode, setAuthCode] = useState();
 
   const get_token = (authCode) => {
     const myHeaders = new Headers();
@@ -25,7 +25,7 @@ function App() {
 
     fetch("https://hub.netart.io/api/method/frappe.integrations.oauth2.get_token", requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((result) => result)
       .catch((error) => console.error(error));
   }
 
@@ -51,8 +51,7 @@ function App() {
 
     // Exchange the authorization code for a token
     if (code) {
-      setAuthCode(code);
-      get_token(code);
+      setAuthCode(get_token(code));
     }
   }, []);
 
@@ -67,7 +66,7 @@ function App() {
           {params.map((param, index) => (
             <li key={index}>{param.key}: {param.value}</li>
           ))}
-          {authCode}
+          {JSON.stringify(authCode)}
         </ul>
       </p>
     </>
