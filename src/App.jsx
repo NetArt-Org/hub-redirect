@@ -4,55 +4,52 @@ import { useEffect, useState } from 'react';
 function App() {
   const [url, setUrl] = useState('');
   const [params, setParams] = useState([]);
-  const [authCode, setAuthCode] = useState();
-
-  const get_token = (authCode) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("grant_type", "authorization_code");
-    urlencoded.append("code", authCode);
-    urlencoded.append("client_id", "i0a0h7jp79");
-    urlencoded.append("redirect_uri", "https://hub-redirect.netlify.app");
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow"
-    };
-
-    fetch("https://hub.netart.io/api/method/frappe.integrations.oauth2.get_token", requestOptions)
-      .then((response) => response.text())
-      .then((result) => result)
-      .catch((error) => console.error(error));
-  }
-
+  const [accessToken, setAccessToken] = useState('');
 
   useEffect(() => {
     // Get the full URL
     const currentUrl = window.location.href;
     setUrl(currentUrl);
 
+    // Get the URL hash (everything after #)
+    const hash = window.location.hash;
+    
+    // Remove the '#' from the beginning of the hash string
+    const cleanedHash = hash.substring(1);
+
+    // Convert the hash parameters into an object
+    const params = new URLSearchParams(cleanedHash);
+
+    // Get specific values like access_token, expires_in, etc.
+    // const expires = params.get('expires_in');
+    // const type = params.get('token_type');
+    // const scopeValue = params.get('scope');
+    const token = params.get('access_token');
+
     // Extract query parameters
-    const searchParams = new URLSearchParams(window.location.search);
-    const paramsArray = [];
-    let code = '';
+    // const searchParams = new URLSearchParams(window.location.search);
+    // const paramsArray = [];
+    // let code = '';
 
-    for (let [key, value] of searchParams.entries()) {
-      paramsArray.push({ key, value });
-      if (key === 'code') {
-        code = value; // Extract the authorization code
-      }
+    // for (let [key, value] of searchParams.entries()) {
+    //   paramsArray.push({ key, value });
+    //   if (key === 'code') {
+    //     code = value; // Extract the authorization code
+    //   }
+    // }
+    
+    // Set the state with extracted values
+    // setExpiresIn(expires);
+    // setTokenType(type);
+    // setScope(scopeValue);
+    // setParams(paramsArray);
+    setAccessToken(token);
+
+    if (accessToken) {
+      // Redirect back to the Draftbit app with the authorization code
+      window.location.href = `draftbit://EmailScreen?accessToken=${accessToken}`;
     }
 
-    setParams(paramsArray);
-
-    // Exchange the authorization code for a token
-    if (code) {
-      setAuthCode(get_token(code));
-    }
   }, []);
 
   return (
@@ -63,10 +60,7 @@ function App() {
       <p className="read-the-docs">
         URL Parameters:
         <ul>
-          {params.map((param, index) => (
-            <li key={index}>{param.key}: {param.value}</li>
-          ))}
-          {JSON.stringify(authCode)}
+          {accessToken}
         </ul>
       </p>
     </>
