@@ -45,12 +45,15 @@ function App() {
     // setParams(paramsArray);
     setAccessToken(token);
 
+  }, []);
+
+
+  useEffect(() => {
     if (accessToken) {
-      // Redirect back to the Draftbit app with the authorization code
+      // Redirect back to the Draftbit app with the access token
       window.location.href = `draftbit://EmailScreen?accessToken=${accessToken}`;
     }
-
-  }, []);
+  }, [accessToken]); // This effect runs only when accessToken changes
 
   return (
     <>
