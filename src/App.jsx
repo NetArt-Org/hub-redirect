@@ -52,7 +52,7 @@ function App() {
     if (accessToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://EmailScreen?accessToken=${accessToken}`;
+        window.location.href = `draftbit://HomepageScreen/${accessToken}`;
       }, 1000); // 1000 ms delay
     }
   }, [accessToken]);
