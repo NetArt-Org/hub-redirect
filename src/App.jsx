@@ -50,11 +50,13 @@ function App() {
 
   useEffect(() => {
     if (accessToken) {
-      // Redirect back to the Draftbit app with the access token
-      window.location.href = `draftbit://EmailScreen?accessToken=${accessToken}`;
+      // Add a small delay before redirecting
+      setTimeout(() => {
+        window.location.href = `draftbit://EmailScreen?accessToken=${accessToken}`;
+      }, 1000); // 1000 ms delay
     }
-  }, [accessToken]); // This effect runs only when accessToken changes
-
+  }, [accessToken]);
+  
   return (
     <>
       <p className="read-the-docs">
