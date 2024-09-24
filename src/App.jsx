@@ -52,21 +52,18 @@ function App() {
     if (accessToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://HomepageScreen?accessToken=${accessToken}`;
+        window.location.href = `draftbit://HomepageScreen/${accessToken}`;
       }, 1000); // 1000 ms delay
     }
   }, [accessToken]);
   
   return (
     <>
+      <h2>
+        Logged in successfully!
+      </h2>
       <p className="read-the-docs">
-        Current URL: {url}
-      </p>
-      <p className="read-the-docs">
-        URL Parameters:
-        <ul>
-          {accessToken}
-        </ul>
+        Redirecting...
       </p>
     </>
   )
