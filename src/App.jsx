@@ -12,19 +12,20 @@ function App() {
     setUrl(currentUrl);
 
     // Get the URL hash (everything after #)
-    const hash = window.location.hash;
+    // const hash = window.location.hash;
     
     // Remove the '#' from the beginning of the hash string
-    const cleanedHash = hash.substring(1);
+    // const cleanedHash = hash.substring(1);
 
     // Convert the hash parameters into an object
-    const params = new URLSearchParams(cleanedHash);
+    const params = new URLSearchParams(currentUrl.split("?")[1]);
 
     // Get specific values like access_token, expires_in, etc.
     // const expires = params.get('expires_in');
     // const type = params.get('token_type');
     // const scopeValue = params.get('scope');
-    const token = params.get('access_token');
+    // const token = params.get('access_token');
+    const token = params.get('code');
 
     // Extract query parameters
     // const searchParams = new URLSearchParams(window.location.search);
