@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [url, setUrl] = useState('');
-  const [params, setParams] = useState([]);
+  const [refreshToken, setRefreshToken] = useState('');
   const [accessToken, setAccessToken] = useState('');
+  const [code, setCode] = useState('');
 
   useEffect(() => {
     // Get the full URL
@@ -16,9 +17,9 @@ function App() {
     
     // Remove the '#' from the beginning of the hash string
     // const cleanedHash = hash.substring(1);
-
-    // Convert the hash parameters into an object
-    const params = new URLSearchParams(currentUrl.split("?")[1]);
+    const cleanedParams = currentUrl.split("?")[1];
+    // Convert the parameters into an object
+    const params = new URLSearchParams(cleanedParams);
 
     // Get specific values like access_token, expires_in, etc.
     // const expires = params.get('expires_in');
@@ -26,37 +27,51 @@ function App() {
     // const scopeValue = params.get('scope');
     // const token = params.get('access_token');
     const token = params.get('code');
-
-    // Extract query parameters
-    // const searchParams = new URLSearchParams(window.location.search);
-    // const paramsArray = [];
-    // let code = '';
-
-    // for (let [key, value] of searchParams.entries()) {
-    //   paramsArray.push({ key, value });
-    //   if (key === 'code') {
-    //     code = value; // Extract the authorization code
-    //   }
-    // }
     
     // Set the state with extracted values
     // setExpiresIn(expires);
     // setTokenType(type);
     // setScope(scopeValue);
     // setParams(paramsArray);
-    setAccessToken(token);
+    setCode(token);
 
   }, []);
 
-
   useEffect(() => {
-    if (accessToken) {
+    if (code) {
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("code", code);
+      urlencoded.append("client_id", "i0a0h7jp79");
+      urlencoded.append("redirect_uri", "https://hub-redirect.netlify.app");
+
+      const requestOptions = {
+        method: "POST",
+        body: urlencoded,
+      };
+      console.log(requestOptions);
+      
+      fetch("https://hub.netart.io/api/method/frappe.integrations.oauth2.get_token", requestOptions)
+        .then(res => res.json())
+        .then(result => {
+          setRefreshToken(result.refresh_token)
+          setAccessToken(result.access_token)
+          console.log(result);
+          
+        })
+
+      
+    }
+  }, [code]);
+  
+  useEffect(() => {
+    if (accessToken && refreshToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}`;
+        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${refreshToken}`;
       }, 1000); // 1000 ms delay
     }
-  }, [accessToken]);
+  }, [accessToken, refreshToken]);
   
   return (
     <>
