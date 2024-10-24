@@ -39,7 +39,7 @@ function App() {
     if (accessToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${refreshToken}/${userInfo}`;
+        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${userInfo}`;
       }, 1000); // 1000 ms delay
     }
   }, [accessToken]);
