@@ -36,13 +36,13 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (accessToken && refreshToken) {
+    if (accessToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
         window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${refreshToken}/${userInfo}`;
       }, 1000); // 1000 ms delay
     }
-  }, [accessToken, refreshToken]);
+  }, [accessToken]);
   
   return (
     accessToken ? (
