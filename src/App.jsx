@@ -23,8 +23,7 @@ function App() {
           photoURL: user.photoURL,
         });
 
-        console.log('Access Token:', credential.oauthAccessToken);
-        console.log('Refresh Token:', credential.oauthRefreshToken);
+        console.log('Result:', result);
         console.log('User Info:', user);
       })
       .catch((error) => {
@@ -40,7 +39,7 @@ function App() {
     if (accessToken && refreshToken) {
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${refreshToken}`;
+        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${refreshToken}/${userInfo}`;
       }, 1000); // 1000 ms delay
     }
   }, [accessToken, refreshToken]);
