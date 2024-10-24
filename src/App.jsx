@@ -5,6 +5,7 @@ import { auth, provider, signInWithPopup } from './functions/firebase';
 function App() {
   const [accessToken, setAccessToken] = useState('');
   const [refreshToken, setRefreshToken] = useState('');
+  const [userInfo, setUserInfo] = useState(null); 
 
   const handleLogin = () => {
     signInWithPopup(auth, provider)
