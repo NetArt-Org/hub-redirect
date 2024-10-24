@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react';
-import { auth, provider, signInWithPopup } from './firebase';
+import { auth, provider, signInWithPopup } from './functions/firebase';
 
 function App() {
   const [accessToken, setAccessToken] = useState('');
@@ -13,7 +13,7 @@ function App() {
         const credential = result._tokenResponse;
         setAccessToken(credential.oauthAccessToken);
         setRefreshToken(credential.oauthRefreshToken);
-        
+
         // Set user information
         const user = result.user;
         setUserInfo({
