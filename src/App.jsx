@@ -37,9 +37,11 @@ function App() {
 
   useEffect(() => {
     if (accessToken) {
+
+      const encodedUserInfo = encodeURIComponent(JSON.stringify(userInfo));
       // Add a small delay before redirecting
       setTimeout(() => {
-        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${userInfo}`;
+        window.location.href = `draftbit://LoginSuccessfulScreen/${accessToken}/${encodedUserInfo}`;
       }, 1000); // 1000 ms delay
     }
   }, [accessToken]);
